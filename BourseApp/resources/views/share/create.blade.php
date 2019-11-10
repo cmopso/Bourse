@@ -68,6 +68,7 @@
                             <option value="share">Action</option>
                             <option value="tracker">Tracker</option>
                             <option value="fund">Fond commum de placement</option>
+                            <option value="indice">Indice</option>
                         </select>
                     </div>
                 </div>

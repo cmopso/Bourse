@@ -15,9 +15,9 @@
                                     <th class="text-left" style="width: 200px">Action</th>
                                     <th class="text-left" style="width: 100px"> Quantité</th>
                                     <th class="text-left" style="width: 100px"> Prix</th>
-                                    <th class="text-left" style="width: 100px">Total Brut</th>
-                                    <th class="text-left" style="width: 100px">Total Net</th>
-                                    <th class="text-left" style="width: 600px">Commentaire</th>
+                                    <th class="text-left" style="width: 150px">Total Brut</th>
+                                    <th class="text-left" style="width: 150px">Total Net</th>
+                                    <th class="text-left" style="width: 500px">Commentaire</th>
                                     <th class="text-left" style="width: 100px">Frais</th>
                                     <th class="text-left" style="width: 100px">% Frais</th>
                                     <th class="text-left" style="width: 50px">Edit</th>
@@ -75,7 +75,7 @@
                                     <td>{{ number_format($order->totalChargedPrice, 2, ',', ' ') }} €</td>
                                     <td>{{ $order->comment }}</td>
                                     <td>{{ number_format($order->charges, 2, ',', ' ') }} €</td>
-                                    <td>{{ number_format($order->chargesPercent * 100, 2, ',', ' ') }} %</td>
+                                    <td>{{ number_format($order->chargesPercent, 2, ',', ' ') }} %</td>
                                     <td><a href="{{ route('orderEdit', $order) }}"><i class="far fa-edit"></i></a></td>
                                     <td><a href="{{ route('orderDelete', $order) }}"><i class="far fa-trash-alt"></i></a>         
                                 </tr>

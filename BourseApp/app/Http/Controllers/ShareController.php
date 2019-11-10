@@ -3,21 +3,35 @@
 namespace App\Http\Controllers;
 
 use App\Share;
+use App\Order;
+use App\Http\ControllersOrderController;
+
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Collection;
 
 class ShareController extends Controller
 {
     
-    public function index()
+    public function index(Share $share)
     {
-        $shares = Share::all()->sortBy('name');
-        foreach($shares as $share) {
-            if ($share->type == "share") $share->type = "Action";
-            if ($share->type == "tracker") $share->type = "Tracker";
-            if ($share->type == "fund") $share->type = "FCP";
-        }
-        return view('share.index', compact('shares'));
+        $shares = Share::all();
+        $shares = $this->prepareDisplay($shares);
+        $analyze = OrderController::analyzeAllOrders();
+        return view('share.index', compact('shares', 'analyze'));
+    }
+
+    public function detail(Share $share)
+    {
+        $oneShare = $share;
+        $shares = Share::all();
+        $shares = $this->prepareDisplay($shares);
+        
+        $orders = $oneShare->orders;
+        $analyze = OrderController::analyzeAllOrders();
+        
+        $orders = OrderController::prepareDisplay($orders);
+        return view('share.index', compact('shares', 'oneShare', 'orders', 'analyze'));
     }
 
     
@@ -79,5 +93,38 @@ class ShareController extends Controller
         ]);
 
         return $validatedAttributes;
+    }
+
+    public function prepareDisplay(Collection $shares)
+    {
+        $shares = $shares->groupBy('type');
+        foreach(['share', 'indice', 'fund', 'tracker'] as $type) {
+            if (isset($shares[$type])) {
+                $shares[$type]->sortBy(function($share)
+                    {
+                        switch ($share->type)
+                        {
+                            case 'share':
+                                return 1;
+                            case 'indice':
+                                return 2;
+                            case 'fund':
+                                return 3;
+                            case 'tracker':
+                                return 4;
+                        }
+                    }
+                );
+            }
+        }
+        foreach($shares as $shareType) {
+            foreach($shareType as $share) {
+                if ($share->type == "share") $share->type = "Action";
+                if ($share->type == "tracker") $share->type = "Tracker";
+                if ($share->type == "fund") $share->type = "FCP";
+                if ($share->type == "indice") $share->type = "Indice";
+            } 
+        }
+        return $shares;
     }
 }

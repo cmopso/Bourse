@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Share::class, function (Faker $faker) {
 
-    $type = array('share','tracker','fund');
+    $type = array('share','tracker','fund','indice');
 
     return [
         'name'          => $faker->unique()->name,

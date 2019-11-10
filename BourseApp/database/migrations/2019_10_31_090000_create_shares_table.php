@@ -17,7 +17,7 @@ class CreateSharesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique()->default('');
             $table->string('codeISIN')->unique()->default('');
-            $table->enum('type', ['share', 'tracker', 'fund'])->default('share');
+            $table->enum('type', ['share', 'tracker', 'fund', 'indice'])->default('share');
             $table->timestamps();
         });
     }

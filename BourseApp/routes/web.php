@@ -15,7 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+//Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
@@ -28,6 +29,7 @@ Route::put('/order/{order}', 'OrderController@update')->name('orderUpdate')->mid
 Route::get('/order/{order}/delete', 'OrderController@destroy')->name('orderDelete')->middleware('auth');
 
 Route::get('/share', 'shareController@index')->name('shareIndex')->middleware('auth');
+Route::get('/share/{share}/detail', 'shareController@detail')->name('shareDetail')->middleware('auth');
 Route::put('/share', 'shareController@store')->name('shareStore')->middleware('auth');
 Route::get('/share/create', 'shareController@create')->name('shareCreate')->middleware('auth');
 //Route::get('/share/{id}', 'shareController@show')->name('shareShow')->middleware('auth');
