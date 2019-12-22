@@ -53,12 +53,12 @@
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['totalShare'], 2, ',', ' ') }}</td>
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['totalWinLoss'], 2, ',', ' ') }} €</td>
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['averageCost'], 2, ',', ' ') }} €</td>
-                                                    <td class="text-right"> xyz.xx €</td>
+                                                    <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
                                                 @else
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
-                                                    <td class="text-right">-</td>
+                                                    <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
                                                 @endif
                                                 <td class="text-center"><a href="{{ route('shareEdit', $share) }}"><i class="far fa-edit"></i></a></td>
                                                 <td class="text-center"><a href="{{ route('shareDelete', $share) }}"><i class="far fa-trash-alt"></i></a>
@@ -82,7 +82,10 @@
                         <small>
                             {{ $analyze[$oneShare->id]['totalShare'] }} actions en portefeuille. </br>
                             Le prix de revient est de {{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} € </br>
-                            Le cumul des Gains & pertes est de {{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €
+                            Le cumul des Gains & pertes est de {{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} € </br>
+                            @if ($analyze[$oneShare->id]['totalShare'])
+                                Les Gains/pertes en cours sont de {{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €
+                            @endif
                         </small>
                         @if($orders->count() != 0)
                         <div class="table-responsive" style="width: 700px">

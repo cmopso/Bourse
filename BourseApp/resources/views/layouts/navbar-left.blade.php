@@ -6,5 +6,8 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('orderIndex') }}">Ordre </a>
         </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('loadPrices') }}">Charger les cours </a>
+        </li>
     </ul>
 </div>

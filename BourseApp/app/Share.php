@@ -25,4 +25,9 @@ class Share extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function priceShares()
+    {
+        return $this->hasMany(PriceShares::class);
+    }
 }

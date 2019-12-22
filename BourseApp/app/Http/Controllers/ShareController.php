@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Share;
 use App\Order;
-use App\Http\ControllersOrderController;
+use App\PriceShares;
+use App\Http\Controllers\PriceShareController;
+use App\Http\Controllers\OrderController;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -18,7 +20,8 @@ class ShareController extends Controller
         $shares = Share::all();
         $shares = $this->prepareDisplay($shares);
         $analyze = OrderController::analyzeAllOrders();
-        return view('share.index', compact('shares', 'analyze'));
+        $lastPrices = $this->getLastPriceAllShare();
+        return view('share.index', compact('shares', 'analyze', 'lastPrices'));
     }
 
     public function detail(Share $share)
@@ -29,9 +32,10 @@ class ShareController extends Controller
         
         $orders = $oneShare->orders;
         $analyze = OrderController::analyzeAllOrders();
-        
+        $lastPrices = $this->getLastPriceAllShare();
+
         $orders = OrderController::prepareDisplay($orders);
-        return view('share.index', compact('shares', 'oneShare', 'orders', 'analyze'));
+        return view('share.index', compact('shares', 'oneShare', 'orders', 'analyze', 'lastPrices'));
     }
 
     
@@ -126,5 +130,22 @@ class ShareController extends Controller
             } 
         }
         return $shares;
+    }
+
+    public function getLastPriceAllShare()
+    {
+        $lastPrices = [];
+
+        $shares = Share::all();
+        foreach ($shares as $share) {
+            $sharePrice = PriceShares::where('share_id', $share->id)->orderBy('date', 'desc')->first();
+            if ($sharePrice) {
+                $lastPrices[$share->id] = $sharePrice->close;    
+            } else {
+                $lastPrices[$share->id] = 0;
+            }
+        }
+
+        return $lastPrices;
     }
 }

@@ -33,17 +33,17 @@
                                             @error('passedOn') <p class="help is-danger">{{ $errors->first('passedOn')}}</p> @enderror
                                         </td>
                                         <td> 
-                                            <select class="form-control form-control-sm" name="type"> 
-                                                <option value="buy">Achat</option>
-                                                <option value="sale">Vente</option>
-                                                <option value="dividen">Dividende</option>
-                                                <option value="other">Autre</option>
+                                            <select class="form-control form-control-sm" name="type">  
+                                                <option value="buy" {{ (old("type") == "buy" ? "selected":"") }}> Achat</option>
+                                                <option value="sale" {{ (old("type") == "sale" ? "selected":"") }}>Vente</option>
+                                                <option value="dividend" {{ (old("type") == "dividend" ? "selected":"") }}>Dividende</option>
+                                                <option value="other" {{ (old("type") == "other" ? "selected":"") }}>Autre</option>
                                             </select>
                                         </td>
                                         <td> 
                                             <select class="form-control form-control-sm" name="share_id">
                                                 @foreach($shares as $share)
-                                                    <option value="{{$share->id}}">{{$share->name}}</option>
+                                                    <option value="{{$share->id}}" {{ (old("share_id") == $share->id ? "selected":"") }}>{{$share->name}}</option>
                                                 @endforeach
                                             </select>
                                         </td>

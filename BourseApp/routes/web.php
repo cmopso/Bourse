@@ -28,11 +28,13 @@ Route::get('/order/{order}/edit', 'OrderController@edit')->name('orderEdit')->mi
 Route::put('/order/{order}', 'OrderController@update')->name('orderUpdate')->middleware('auth');
 Route::get('/order/{order}/delete', 'OrderController@destroy')->name('orderDelete')->middleware('auth');
 
-Route::get('/share', 'shareController@index')->name('shareIndex')->middleware('auth');
-Route::get('/share/{share}/detail', 'shareController@detail')->name('shareDetail')->middleware('auth');
-Route::put('/share', 'shareController@store')->name('shareStore')->middleware('auth');
-Route::get('/share/create', 'shareController@create')->name('shareCreate')->middleware('auth');
-//Route::get('/share/{id}', 'shareController@show')->name('shareShow')->middleware('auth');
-Route::get('/share/{share}/edit', 'shareController@edit')->name('shareEdit')->middleware('auth');
-Route::put('/share/{share}', 'shareController@update')->name('shareUpdate')->middleware('auth');
-Route::get('/share/{share}/delete', 'shareController@destroy')->name('shareDelete')->middleware('auth');
+Route::get('/share', 'ShareController@index')->name('shareIndex')->middleware('auth');
+Route::get('/share/{share}/detail', 'ShareController@detail')->name('shareDetail')->middleware('auth');
+Route::put('/share', 'ShareController@store')->name('shareStore')->middleware('auth');
+Route::get('/share/create', 'ShareController@create')->name('shareCreate')->middleware('auth');
+//Route::get('/share/{id}', 'ShareController@show')->name('shareShow')->middleware('auth');
+Route::get('/share/{share}/edit', 'ShareController@edit')->name('shareEdit')->middleware('auth');
+Route::put('/share/{share}', 'ShareController@update')->name('shareUpdate')->middleware('auth');
+Route::get('/share/{share}/delete', 'ShareController@destroy')->name('shareDelete')->middleware('auth');
+
+Route::get('/loadPrices', 'PriceSharesController@loadPrices')->name('loadPrices')->middleware('auth');

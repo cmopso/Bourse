@@ -25,7 +25,7 @@ class CreatePricesharesTable extends Migration
             $table->float('highest')->default(0.0);
             $table->float('lowest')->default(0.0);
             $table->float('close')->default(0.0);
-            $table->float('volume')->default(0.0);
+            $table->float('volume',16,2)->default(0.0);
             $table->timestamps();
         });
     }
