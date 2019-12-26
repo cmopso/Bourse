@@ -14,7 +14,7 @@ class PriceSharesController extends Controller
     public static function loadPrices() 
     {
         $results = [];
-        $siteStartDate = Carbon::createFromFormat("!d/m/y", "01/12/19");
+        $siteStartDate = Carbon::createFromFormat("!d/m/y", "01/01/18");
         $endDate = Carbon::today()->startOfDay();
         // ISO weekday from 1 (Monday) to 7 (Sunday) 
         // if today is the week end, we consider last friday 
