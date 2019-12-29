@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Share;
 use App\Order;
 use App\PriceShares;
-use App\Http\Controllers\PriceShareController;
+use App\Http\Controllers\PriceSharesController;
 use App\Http\Controllers\OrderController;
 
 use Illuminate\Http\Request;
@@ -27,15 +27,17 @@ class ShareController extends Controller
     public function detail(Share $share)
     {
         $oneShare = $share;
-        $shares = Share::all();
-        $shares = $this->prepareDisplay($shares);
-        
+        $shares = Share::all()->groupBy("type")->sortBy('name');
+
         $orders = $oneShare->orders;
         $analyze = OrderController::analyzeAllOrders();
         $lastPrices = $this->getLastPriceAllShare();
 
         $orders = OrderController::prepareDisplay($orders);
-        return view('share.index', compact('shares', 'oneShare', 'orders', 'analyze', 'lastPrices'));
+
+        $priceShareData = PriceSharesController::getAllPrices($oneShare);
+    
+        return view('share.detail', compact('shares', 'oneShare', 'orders', 'analyze', 'lastPrices', 'priceShareData'));
     }
 
     

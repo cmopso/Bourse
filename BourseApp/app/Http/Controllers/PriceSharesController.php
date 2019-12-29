@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\PriceShares;
 use App\Share;
+use App\Order;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -130,4 +131,61 @@ class PriceSharesController extends Controller
         return $results; 
     }
     
+    // return an array of arrays 
+    // [price] = share prices index is YYYY-MM-DD value is price
+    // [min] = min for each month
+    // [max] = max for each month
+    // [buy] & [sale]
+    // [cac]
+    public static function getAllPrices($share) 
+    {
+        $indice = Share::where("codeISIN", "FR0003500008")->first();
+        $indicePrices = PriceShares::where("share_id", $indice->id)->orderBy("date")->get();
+        $prices = PriceShares::where("share_id", $share->id)->orderBy("date")->get();
+        $priceShareData = [];
+        $day = $prices[0]->date->day;
+        $month = $prices[0]->date->month;
+        $year = $prices[0]->date->year;
+        $minMonth = $prices[0]->close;
+        $maxMonth = $prices[0]->close;
+        
+        foreach ($prices as $key => $price) {
+            if  ($month == $price->date->month) {
+                // still the samme month, we update min & max
+                if ($minMonth > $price->close)  $minMonth =  $price->close;
+                if ($maxMonth < $price->close)  $maxMonth =  $price->close;
+                $day = $price->date->day;
+            } else {
+                // we change of month, we initialize min & max + month and save value to the array
+                $priceShareData["min"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $minMonth;
+                $priceShareData["max"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $maxMonth;
+
+                $minMonth = $price->close;
+                $maxMonth = $price->close;
+                $day = $price->date->day;
+                $month = $price->date->month;
+                $year = $price->date->year;
+            }
+            $priceShareData["price"][$price->date->toDateString()] = $price->close;
+        }
+        // we save the last month
+        $priceShareData["min"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $minMonth;
+        $priceShareData["max"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $maxMonth;
+
+        foreach ($indicePrices as $indicePrice) {
+            $priceShareData["cac"][$indicePrice->date->toDateString()] = $indicePrice->close;
+        }
+
+        $orders = $share->orders;
+        foreach ($orders as $order) {
+            $year = $order->passedOn->year;
+            $month = $order->passedOn->month;
+            $day = $order->passedOn->day;
+            $priceShareData[$order->type][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $order->price;
+        }
+
+        //dd($priceShareData);
+        return $priceShareData;
+    }
+
 }
