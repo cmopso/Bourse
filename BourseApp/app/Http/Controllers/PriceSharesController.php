@@ -137,12 +137,26 @@ class PriceSharesController extends Controller
     // [max] = max for each month
     // [buy] & [sale]
     // [cac]
+    // [same]
+    // [color]
     public static function getAllPrices($share) 
     {
-        $indice = Share::where("codeISIN", "FR0003500008")->first();
-        $indicePrices = PriceShares::where("share_id", $indice->id)->orderBy("date")->get();
-        $prices = PriceShares::where("share_id", $share->id)->orderBy("date")->get();
         $priceShareData = [];
+        $shareColor = [
+            "#007bff", "#003D80", "#003D80","#FF8400","#CC5100",
+            "#000000", 
+            "#007BFF", "#0400FF","#8400FF","#3f51b5","#FF00FB", "#FF007B","#FF0400",
+            "#009688","#4caf50","#8bc34a","#cddc39",
+            "#ffeb3b", "#ffc107", "#ff9800","#ff5722","#795548","#9e9e9e",
+            "#607d8b",
+            "#EBDEF0","#D4E6F1","#D1F2EB","#FCF3CF","#EDBB99",
+            "#C0392B", "#9B59B6", "#2980B9","#1ABC9C","#F1C40F","#E67E22",
+            "#D98880","#EBDEF0","#D4E6F1","#D1F2EB","#FCF3CF","#EDBB99",
+            ];
+        $indexShareColor = 0;
+
+        // get share data prices, min, max, buy and sales
+        $prices = PriceShares::where("share_id", $share->id)->orderBy("date")->get();
         $day = $prices[0]->date->day;
         $month = $prices[0]->date->month;
         $year = $prices[0]->date->year;
@@ -172,16 +186,42 @@ class PriceSharesController extends Controller
         $priceShareData["min"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $minMonth;
         $priceShareData["max"][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $maxMonth;
 
-        foreach ($indicePrices as $indicePrice) {
-            $priceShareData["cac"][$indicePrice->date->toDateString()] = $indicePrice->close;
-        }
-
         $orders = $share->orders;
         foreach ($orders as $order) {
             $year = $order->passedOn->year;
             $month = $order->passedOn->month;
             $day = $order->passedOn->day;
             $priceShareData[$order->type][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $order->price;
+        }
+
+        // get CAC 40
+        $indice = Share::where("codeISIN", "FR0003500008")->first();
+        $indicePrices = PriceShares::where("share_id", $indice->id)->orderBy("date")->get();
+        foreach ($indicePrices as $indicePrice) {
+            $priceShareData["cac"][$indicePrice->date->toDateString()] = $indicePrice->close;
+        }
+
+        // we add color
+        $priceShareData["color"]['prices'] = $shareColor[0];
+        $priceShareData["color"]['min'] = $shareColor[1];
+        $priceShareData["color"]['max'] = $shareColor[2];
+        $priceShareData["color"]['Achat'] = $shareColor[3];
+        $priceShareData["color"]['Vente'] = $shareColor[4];
+        $priceShareData["color"]['cac'] = $shareColor[5];
+        $indexShareColor = 6;
+
+        // get all shares of the same type for comparison
+        $priceShareData["index"] = [];
+        $sameShares = Share::where("type", $share->type)->orderBy("name")->get();
+        foreach ($sameShares as $sameShare) {
+            array_push($priceShareData["index"],$sameShare->id);
+            $priceShareData["name"][$sameShare->id] = $sameShare->name;
+            $priceShareData["color"][$sameShare->id] = $shareColor[$indexShareColor];
+            $indexShareColor++;
+            $sameSharePrices = PriceShares::where("share_id", $sameShare->id)->orderBy("date")->get();
+            foreach ($sameSharePrices as $sameSharePrice) {
+                $priceShareData["same"][$sameShare->id][$sameSharePrice->date->toDateString()] = $sameSharePrice->close;
+            }
         }
 
         //dd($priceShareData);

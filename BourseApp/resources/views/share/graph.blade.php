@@ -19,17 +19,18 @@ am4core.ready(function() {
 am4core.useTheme(am4themes_animated);
 // Themes end
 
-// Create chart instance
+// ----- Create chart instance
 var chart = am4core.create("chartdiv", am4charts.XYChart);
 chart.padding(0, 15, 0, 15);
 chart.colors.step = 3;
 chart.leftAxesContainer.layout = "vertical";
 
-// Add data
-chart.dateFormatter.dateFormat = "yyyy-MM-dd";
-chart.data = generateChartData();
+// Add Legend
+chart.legend = new am4charts.Legend();
+chart.legend.labels.template.text = "{name}";
+chart.legend.position ="top";
 
-// Create axes
+// ----- Create Date axis
 var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 dateAxis.renderer.minGridDistance = 50;
 dateAxis.minZoomCount = 31;
@@ -50,12 +51,12 @@ dateAxis.renderer.maxLabelPosition = 0.99;
 dateAxis.minHeight = 30;
 dateAxis.groupData = true;
 
-// first Y axis
+// ----- Create Y axis for Share price
 var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 //valueAxis.renderer.opposite = true;
 valueAxis.height = am4core.percent(65);
 
-valueAxis.renderer.gridContainer.background.fill = am4core.color("#000000");
+valueAxis.renderer.gridContainer.background.fill = am4core.color("{{$priceShareData["color"]["prices"]}}");
 valueAxis.renderer.gridContainer.background.fillOpacity = 0.05;
 valueAxis.renderer.inside = false;
 valueAxis.renderer.labels.template.verticalCenter = "bottom";
@@ -63,129 +64,12 @@ valueAxis.renderer.labels.template.padding(5, 5, 5, 5);
 //valueAxis.renderer.maxLabelPosition = 0.95;
 valueAxis.renderer.fontSize = "0.8em"
 
-// Create series
-// Prices
-var series1 = chart.series.push(new am4charts.LineSeries());
-series1.dataFields.valueY = "prices";
-series1.dataFields.dateX = "date";
-series1.strokeWidth = 2;
-series1.stroke = am4core.color("#5499C7");
-series1.minBulletDistance = 10;
-series1.tooltipText = "{valueY}";
-series1.tooltip.pointerOrientation = "vertical";
-series1.tooltip.background.cornerRadius = 20;
-series1.tooltip.background.fillOpacity = 0.5;
-series1.tooltip.label.padding(12,12,12,12);
-//series1.dataFields.valueYShow = "changePercent";
-//series1.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-// Min
-var series2 = chart.series.push(new am4charts.StepLineSeries());
-series2.dataFields.valueY = "min";
-series2.dataFields.dateX = "date";
-series2.strokeWidth = 2;
-series2.stroke = am4core.color("#AAAAAA");
-series2.minBulletDistance = 10;
-series2.tooltipText = "{valueY}";
-series2.tooltip.pointerOrientation = "vertical";
-series2.tooltip.background.cornerRadius = 20;
-series2.tooltip.background.fillOpacity = 0.5;
-series2.tooltip.label.padding(12,12,12,12);
-//series2.dataFields.valueYShow = "changePercent";
-//series2.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-// Max
-var series3 = chart.series.push(new am4charts.StepLineSeries());
-series3.dataFields.valueY = "max";
-series3.dataFields.dateX = "date";
-series3.strokeWidth = 2;
-series3.stroke = am4core.color("#AAAAAA");
-series3.minBulletDistance = 10;
-series3.tooltipText = "{valueY}";
-series3.tooltip.pointerOrientation = "vertical";
-series3.tooltip.background.cornerRadius = 20;
-series3.tooltip.background.fillOpacity = 0.5;
-series3.tooltip.label.padding(12,12,12,12);
-//series3.dataFields.valueYShow = "changePercent";
-//series3.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-// Buy
-var series4 = chart.series.push(new am4charts.ColumnSeries());
-series4.dataFields.valueY = "Achat";
-series4.dataFields.dateX = "date";
-series4.strokeWidth = 4;
-series4.stroke = am4core.color("#2980B9");
-series4.fill = am4core.color("#2980B9");
-series4.minBulletDistance = 10;
-series4.tooltipText = "{valueY}";
-series4.tooltip.pointerOrientation = "vertical";
-series4.tooltip.background.cornerRadius = 20;
-series4.tooltip.background.fillOpacity = 0.5;
-series4.tooltip.label.padding(12,12,12,12);
-//series4.dataFields.valueYShow = "changePercent";
-//series4.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-// Sale
-var series5 = chart.series.push(new am4charts.ColumnSeries());
-series5.dataFields.valueY = "Vente";
-series5.dataFields.dateX = "date";
-series5.strokeWidth = 4;
-series5.stroke = am4core.color("#884EA0");
-series5.fill = am4core.color("#884EA0");
-series5.minBulletDistance = 10;
-series5.tooltipText = "{valueY}";
-series5.tooltip.pointerOrientation = "vertical";
-series5.tooltip.background.cornerRadius = 20;
-series5.tooltip.background.fillOpacity = 0.5;
-series5.tooltip.label.padding(12,12,12,12);
-//series5.dataFields.valueYShow = "changePercent";
-//series5.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-// CAC
-//var series6 = chart.series.push(new am4charts.LineSeries());
-//series6.dataFields.valueY = "cac";
-//series6.dataFields.dateX = "date";
-//series6.strokeWidth = 2;
-//series6.stroke = am4core.color("#000000");
-//series6.minBulletDistance = 10;
-//series6.tooltipText = "{valueY}";
-//series6.tooltip.pointerOrientation = "vertical";
-//series6.tooltip.background.cornerRadius = 20;
-//series6.tooltip.background.fillOpacity = 0.5;
-//series6.tooltip.label.padding(12,12,12,12);
-//series6.dataFields.valueYShow = "changePercent";
-//series6.tooltipText = "[b]{valueY.changePercent}[/]%";
-
-//valueAxis.renderer.labels.template.adapter.add("text", function(text) { return text + "%";});
-
-// Add scrollbar
-//chart.scrollbarX = new am4charts.XYChartScrollbar();
-//chart.scrollbarX.series.push(series1);
-//chart.scrollbarX.parent = chart.bottomAxesContainer;
-chart.zoomOutButton.align = "left";
-
-// Add cursor
-chart.cursor = new am4charts.XYCursor();
-chart.cursor.xAxis = dateAxis;
-chart.cursor.snapToSeries = series1;
-
-// these two lines makes the axis to be initially zoomed-in
-var startDate = new Date("2018-01-01");
-var endDate = new Date();
-var NbMonth = endDate.getMonth() - startDate.getMonth();
-var NbYear = endDate.getFullYear() - startDate.getFullYear();
-var ratio6Month = 6/ (NbYear * 12 + NbMonth);
-dateAxis.start = 1 - ratio6Month;
-dateAxis.keepSelection = true;
-
-
-
-// second chart with dedicated Axis
+// ----- Create Y axis for share comparison 
 var valueAxis2 = chart.yAxes.push(new am4charts.ValueAxis());
-valueAxis2.tooltip.disabled = true;
+//valueAxis2.tooltip.disabled = true;
 // height of axis
 valueAxis2.height = am4core.percent(35);
-valueAxis2.zIndex = 3
+//valueAxis2.zIndex = 3
 // this makes gap between panels
 valueAxis2.marginTop = 30;
 valueAxis2.renderer.baseGrid.disabled = true;
@@ -195,12 +79,62 @@ valueAxis2.renderer.labels.template.padding(2, 2, 2, 2);
 //valueAxis.renderer.maxLabelPosition = 0.95;
 valueAxis2.renderer.fontSize = "0.8em";
 
-valueAxis2.renderer.gridContainer.background.fill = am4core.color("#000000");
+valueAxis2.renderer.gridContainer.background.fill = am4core.color("{{$priceShareData["color"]["prices"]}}");
 valueAxis2.renderer.gridContainer.background.fillOpacity = 0.05;
 //valueAxis2.renderer.opposite = true;
 
 valueAxis2.renderer.labels.template.adapter.add("text", function(text) { return text + "%";});
 
+// ----- Create scrollbar
+//chart.scrollbarX = new am4charts.XYChartScrollbar();
+//chart.scrollbarX.series.push(series1);
+//chart.scrollbarX.parent = chart.bottomAxesContainer;
+chart.zoomOutButton.align = "left";
+
+// ----- Add cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.xAxis = dateAxis;
+//chart.cursor.snapToSeries = seriesprices;
+
+// ----- these lines makes the axis to be initially zoomed-in
+var startDate = new Date("2018-01-01");
+var endDate = new Date();
+var NbMonth = endDate.getMonth() - startDate.getMonth();
+var NbYear = endDate.getFullYear() - startDate.getFullYear();
+var ratio6Month = 6/ (NbYear * 12 + NbMonth);
+dateAxis.start = 1 - ratio6Month;
+dateAxis.keepSelection = true;
+
+// ----- Create series for oneShare
+@foreach (['prices','min','max', 'Achat', 'Vente'] as $index => $serieName) 
+  @if ($serieName == 'min' || $serieName == 'max')
+    var series{{$serieName}} = chart.series.push(new am4charts.StepLineSeries());
+  @endif
+  @if ($serieName == 'Achat' || $serieName == 'Vente')
+    var series{{$serieName}} = chart.series.push(new am4charts.ColumnSeries());
+  @endif
+  @if ($serieName == 'prices')
+    var series{{$serieName}} = chart.series.push(new am4charts.LineSeries());
+  @endif
+  series{{$serieName}}.dataFields.valueY = "{{$serieName}}";
+  series{{$serieName}}.dataFields.dateX = "date";
+  series{{$serieName}}.strokeWidth = 2;
+  series{{$serieName}}.stroke = am4core.color("{{$priceShareData["color"][$serieName]}}");
+  series{{$serieName}}.fill = am4core.color("{{$priceShareData["color"][$serieName]}}");
+  series{{$serieName}}.minBulletDistance = 10;
+  series{{$serieName}}.tooltipText = "{valueY}";
+  series{{$serieName}}.tooltip.pointerOrientation = "vertical";
+  series{{$serieName}}.tooltip.background.cornerRadius = 20;
+  series{{$serieName}}.tooltip.background.fillOpacity = 0.5;
+  series{{$serieName}}.tooltip.label.padding(12,12,12,12);
+  @if ($serieName == 'prices')
+    series{{$serieName}}.name = "{{$oneShare->name}}";
+  @else
+  series{{$serieName}}.name = "{{$serieName}}";
+  @endif
+@endforeach
+
+// ----- Create series for comparison
 // CAC
 var series6 = chart.series.push(new am4charts.LineSeries());
 series6.dataFields.valueY = "cac";
@@ -216,23 +150,31 @@ series6.tooltip.label.padding(12,12,12,12);
 series6.dataFields.valueYShow = "changePercent";
 series6.tooltipText = "[b]{valueY.changePercent}[/]%";
 series6.yAxis = valueAxis2;
+series6.name = "CAC 40";
 
-// Price
-var series7 = chart.series.push(new am4charts.LineSeries());
-series7.dataFields.valueY = "prices";
-series7.dataFields.dateX = "date";
-series7.strokeWidth = 2;
-series7.stroke = am4core.color("#5499C7");
-series7.minBulletDistance = 10;
-series7.tooltipText = "{valueY}";
-series7.tooltip.pointerOrientation = "vertical";
-series7.tooltip.background.cornerRadius = 20;
-series7.tooltip.background.fillOpacity = 0.5;
-series7.tooltip.label.padding(12,12,12,12);
-series7.dataFields.valueYShow = "changePercent";
-series7.tooltipText = "[b]{valueY.changePercent}[/]%";
-series7.yAxis = valueAxis2;
+// same shares
+@foreach ($priceShareData["same"] as $id => $sameSharePrices)
+  var series8{{$id}} = chart.series.push(new am4charts.LineSeries());
+  series8{{$id}}.dataFields.valueY = "{{$id}}";
+  series8{{$id}}.dataFields.dateX = "date";
+  series8{{$id}}.strokeWidth = 2;
+  series8{{$id}}.stroke = am4core.color("{{$priceShareData["color"][$id]}}");
+  series8{{$id}}.minBulletDistance = 10;
+  series8{{$id}}.tooltipText = "{valueY}";
+  series8{{$id}}.tooltip.pointerOrientation = "vertical";
+  series8{{$id}}.tooltip.background.cornerRadius = 20;
+  series8{{$id}}.tooltip.background.fillOpacity = 0.5;
+  series8{{$id}}.tooltip.label.padding(12,12,12,12);
+  series8{{$id}}.dataFields.valueYShow = "changePercent";
+  series8{{$id}}.tooltipText = "[b]{valueY.changePercent}[/]%";
+  series8{{$id}}.tooltip.disabled = true;
+  series8{{$id}}.yAxis = valueAxis2;
+  series8{{$id}}.name = "{{$priceShareData["name"][$id]}}";
+@endforeach
 
+// Add data
+chart.dateFormatter.dateFormat = "yyyy-MM-dd";
+chart.data = generateChartData();
 
 function generateChartData() {
     var chartData = [];
@@ -256,6 +198,11 @@ function generateChartData() {
             @if (isset($priceShareData["cac"][$key]))
                 cac: {{ $priceShareData["cac"][$key] }},
             @endif
+            @foreach ($priceShareData["same"] as $id => $sameSharePrices)
+              @if (isset($sameSharePrices[$key]))
+                  {{ $id }} : {{ $sameSharePrices[$key] }},
+              @endif
+            @endforeach
             });
     @endforeach
 
@@ -368,9 +315,10 @@ function updateZoom() {
         To: <input type="text" id="tofield" class="amcharts-input" />
     </div>
     <div style="float: right; margin-right: 15px;">
-        <!-- button id="bpc" class="amcharts-input btn btn-danger">%</button -->
+        <!-- 
         <button id="bpr" class="amcharts-input btn btn-success"><</button>
         <button id="baf" class="amcharts-input btn btn-success">></button>
+        -->
         <button id="b1m" class="amcharts-input btn btn-primary">1m</button>
         <button id="b3m" class="amcharts-input btn btn-primary">3m</button>
         <button id="b6m" class="amcharts-input btn btn-primary">6m</button>

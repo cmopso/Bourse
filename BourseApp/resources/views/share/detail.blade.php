@@ -40,9 +40,9 @@
                         </div>
                         <small>
                             @if(isset($analyze[$oneShare->id]))
-                                <strong>{{ $analyze[$oneShare->id]['totalShare'] }}</strong> actions en portefeuille. </br>
+                                <strong>{{ $analyze[$oneShare->id]['totalShare'] }}</strong> actions en portefeuille. 
                                 Le prix de revient est de <strong>{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</strong> </br>
-                                Le cumul des Gains & pertes est de <strong style={{ ($analyze[$oneShare->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €</strong> </br>
+                                Le cumul des Gains & pertes est de <strong style={{ ($analyze[$oneShare->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €</strong>.
                                 @if ($analyze[$oneShare->id]['totalShare'])
                                     Les Gains/pertes en cours sont de <strong style={{ (($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']))>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €</strong>
                                 @endif
