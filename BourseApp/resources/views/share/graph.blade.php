@@ -315,10 +315,9 @@ function updateZoom() {
         To: <input type="text" id="tofield" class="amcharts-input" />
     </div>
     <div style="float: right; margin-right: 15px;">
-        <!-- 
-        <button id="bpr" class="amcharts-input btn btn-success"><</button>
-        <button id="baf" class="amcharts-input btn btn-success">></button>
-        -->
+        <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['previous']) }}" role="button">< {{$priceShareData['name'][$priceShareData['previous']]}}</a>
+        <a class="btn btn-outline-success" href="#" role="button">{{$oneShare->name}}</a>
+        <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['next']) }}" role="button">{{$priceShareData['name'][$priceShareData['next']]}}></a>
         <button id="b1m" class="amcharts-input btn btn-primary">1m</button>
         <button id="b3m" class="amcharts-input btn btn-primary">3m</button>
         <button id="b6m" class="amcharts-input btn btn-primary">6m</button>

@@ -224,6 +224,20 @@ class PriceSharesController extends Controller
             }
         }
 
+        $currentShareIndex = array_search($share->id, $priceShareData["index"]);
+        if($currentShareIndex == 0) {
+            // first sahre in the list
+            $priceShareData["previous"] = $priceShareData["index"][count($priceShareData["index"])-1];
+            $priceShareData["next"] = $priceShareData["index"][$currentShareIndex+1];
+        } elseif ($currentShareIndex == count($priceShareData["index"])-1) {
+            // last share in the list
+            $priceShareData["previous"] = $priceShareData["index"][$currentShareIndex-1];
+            $priceShareData["next"] = $priceShareData["index"][0];
+        } else {
+            $priceShareData["previous"] = $priceShareData["index"][$currentShareIndex-1];
+            $priceShareData["next"] = $priceShareData["index"][$currentShareIndex+1];
+        }
+    
         //dd($priceShareData);
         return $priceShareData;
     }
