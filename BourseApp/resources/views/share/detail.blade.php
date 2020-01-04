@@ -8,14 +8,12 @@
                         </p>
                         <div class="col-md-1">
 
-                            <div class="btn-group" role="group" aria-label="toolbar">
+                            <div class="btn-group" role="group" aria-label="toolbar" style="margin-left: 0px;"> 
                                 <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ $oneShare->name}}
-                                    </button>
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $oneShare->name}}</button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @foreach(['share','indice','fund', 'tracker'] as $type)
-                                        <a class="dropdown-item" href="#">----- {{$type}} -----</a>
+                                            <a class="dropdown-item" href="#">----- {{$type}} -----</a>
                                             @if(isset($shares[$type]))
                                                 @foreach ($shares[$type] as $key => $share)
                                                     <a class="dropdown-item" href="{{ route('shareDetail', $share->id) }}">{{$share->name}}</a>
@@ -38,16 +36,18 @@
                             </select>
                             -->
                         </div>
-                        <small>
-                            @if(isset($analyze[$oneShare->id]))
-                                <strong>{{ $analyze[$oneShare->id]['totalShare'] }}</strong> actions en portefeuille. 
-                                Le prix de revient est de <strong>{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</strong> </br>
-                                Le cumul des Gains & pertes est de <strong style={{ ($analyze[$oneShare->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €</strong>.
-                                @if ($analyze[$oneShare->id]['totalShare'])
-                                    Les Gains/pertes en cours sont de <strong style={{ (($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']))>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €</strong>
+                        <div class="col-md-auto">
+                            <small>
+                                @if(isset($analyze[$oneShare->id]))
+                                    <strong>{{ $analyze[$oneShare->id]['totalShare'] }}</strong> actions en portefeuille. </br>
+                                    Le prix de revient est de <strong>{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</strong> </br>
+                                    Le cumul des Gains & pertes est de <strong style={{ ($analyze[$oneShare->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €</strong>.</br>
+                                    @if ($analyze[$oneShare->id]['totalShare'])
+                                        Les Gains/pertes en cours sont de <strong style={{ (($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']))>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €</strong>
+                                    @endif
                                 @endif
-                            @endif
-                        </small>
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>

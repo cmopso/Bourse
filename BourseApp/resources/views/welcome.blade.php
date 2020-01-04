@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Bourse</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -84,10 +84,7 @@
                     Bourse
                 </div>
 
-                <div class="links">
-                    <a href="{{ route('shareIndex') }}">Actions</a>
-                    
-                </div>
+                
             </div>
         </div>
     </body>

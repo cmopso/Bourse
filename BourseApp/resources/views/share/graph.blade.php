@@ -315,10 +315,12 @@ function updateZoom() {
         To: <input type="text" id="tofield" class="amcharts-input" />
     </div>
     <div style="float: right;">
-    <div class="btn-group btn-group-toggle" role="group" data-toggle="buttons">
+    <div class="btn-group" role="group">
         <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['previous']) }}" role="button">< {{$priceShareData['name'][$priceShareData['previous']]}}</a>
         <a class="btn btn-outline-success" href="#" role="button">{{$oneShare->name}}</a>
         <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['next']) }}" role="button">{{$priceShareData['name'][$priceShareData['next']]}}></a>
+    </div>
+    <div class="btn-group btn-group-toggle" role="group" data-toggle="buttons">
         <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b1m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">1m</label>
         <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b3m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">3m</label>
         <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b6m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">6m</label>

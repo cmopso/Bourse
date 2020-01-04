@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-auto">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     <div class="table-responsive" >

@@ -18,6 +18,9 @@ Route::get('/', function () {
 //Auth::routes();
 Auth::routes(['register' => false]);
 
+Route::get('/changePassword', 'HomeController@changePassword')->name('changePassword')->middleware('auth');
+Route::post('/changePassword', 'HomeController@updatePassword')->name('updatePassword')->middleware('auth');
+
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 
 Route::get('/order', 'OrderController@index')->name('orderIndex')->middleware('auth');

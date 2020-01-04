@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -25,5 +27,19 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function changePassword()
+    {
+        $user = Auth::user();
+        return view('auth.change',compact('user'));
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $user->password = bcrypt($request->password);
+        $user->save();
+        return redirect('/share');
     }
 }
