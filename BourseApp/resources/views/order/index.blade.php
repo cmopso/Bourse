@@ -2,28 +2,12 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="table-responsive" style="width: 1800px">
+                    <div class="table-responsive">
                         </p>
-                        <table class="table table-striped table-hover display" id="orderList">
-                            <thead>
-                                <tr>
-                                    <th class="text-left" style="width: 150px">Date</th>
-                                    <th class="text-left" style="width: 150px">Ordre</th>
-                                    <th class="text-left" style="width: 200px">Action</th>
-                                    <th class="text-left" style="width: 100px"> Quantité</th>
-                                    <th class="text-left" style="width: 100px"> Prix</th>
-                                    <th class="text-left" style="width: 150px">Total Brut</th>
-                                    <th class="text-left" style="width: 150px">Total Net</th>
-                                    <th class="text-left" style="width: 500px">Commentaire</th>
-                                    <th class="text-left" style="width: 100px">Frais</th>
-                                    <th class="text-left" style="width: 100px">% Frais</th>
-                                    <th class="text-left" style="width: 50px">Edit</th>
-                                    <th class="text-left" style="width: 50px">Delete</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-striped table-hover  display" id="orderList">
                             <tbody>
                                 <tr>
                                     <form method="POST" action ="/order">
@@ -64,18 +48,38 @@
                                         </td>
                                     <td colspan=4> <button type="submit" class="btn btn-primary">Ajouter</button></td>
                                 </tr>  
+                            </tbody>
+                        </table>
+                        <table class="table table-striped table-hover table-sm display" id="orderList">
+                            <thead>
+                                <tr>
+                                    <th class="text-left" >Date</th>
+                                    <th class="text-left" >Ordre</th>
+                                    <th class="text-left" >Action</th>
+                                    <th class="text-left" > Quantité</th>
+                                    <th class="text-left" > Prix</th>
+                                    <th class="text-left" >Total Brut</th>
+                                    <th class="text-left" >Total Net</th>
+                                    <th class="text-left" >Frais</th>
+                                    <th class="text-left" >% Frais</th>
+                                    <th class="text-left" >Commentaire</th>
+                                    <th class="text-left" >Edit</th>
+                                    <th class="text-left" >Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             @foreach($orders as $order)
                                 <tr>
                                     <td>{{ $order->passedOn->format("d/m/Y") }}</td>
                                     <td>{{ $order->type }}</td>
-                                    <td>{{ $order->share->name }}</td>
+                                    <td><a href="{{ route('shareDetail', $order->share->id) }}">{{ $order->share->name }}</a></td>
                                     <td>{{ $order->quantity }}</td>
                                     <td>{{ number_format($order->price, 2, ',', ' ') }} €</td>
                                     <td>{{ number_format($order->totalPrice, 2, ',', ' ') }} €</td>
                                     <td>{{ number_format($order->totalChargedPrice, 2, ',', ' ') }} €</td>
-                                    <td>{{ $order->comment }}</td>
                                     <td>{{ number_format($order->charges, 2, ',', ' ') }} €</td>
                                     <td>{{ number_format($order->chargesPercent, 2, ',', ' ') }} %</td>
+                                    <td>{{ $order->comment }}</td>
                                     <td><a href="{{ route('orderEdit', $order) }}"><i class="far fa-edit"></i></a></td>
                                     <td><a href="{{ route('orderDelete', $order) }}"><i class="far fa-trash-alt"></i></a>         
                                 </tr>

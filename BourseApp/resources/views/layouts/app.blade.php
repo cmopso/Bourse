@@ -28,21 +28,18 @@
 
 <body>
     <div id="app">
-        <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-primary shadow-sm">
-            <div class="container">
-                <!-- 
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Left Side Of Navbar -->
-                @include('layouts.navbar-left')
-                <!-- Right Side Of Navbar -->
-                @include('layouts.navbar-right')
-            </div>
+        <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-primary shadow-sm">          
+            <a class="navbar-brand" href="#">
+                {{ config('app.name', 'Laravel') }}
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Left Side Of Navbar -->
+            @include('layouts.navbar-left')
+            <!-- Right Side Of Navbar -->
+            @include('layouts.navbar-right')
         </nav>
 
         </p></p></p></p>

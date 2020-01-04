@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-2">
             <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         </p>
@@ -48,11 +48,17 @@
                                 @endif
                             @endif
                         </small>
-
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                        </p>
                         @include('share.graph')
 
                         @if($orders->count() != 0)
-                        <div class="table-responsive" style="width: 700px">
+                        <div class="table-responsive table-sm" style="width: 700px">
                             </p>
                             <table class="table table-striped table-hover display" id="playerList">
                                 <thead>

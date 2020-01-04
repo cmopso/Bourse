@@ -22,22 +22,26 @@ class PriceSharesController extends Controller
         if ($endDate->isoWeekday() >5) {
             $endDate->subDay($endDate->isoWeekday() - 5);
         }
-        $shares = Share::all();
-        foreach ($shares as $share) {
-            $priceShareMaxDate = PriceShares::where('share_id', $share->id)->max('date');
-            if ($priceShareMaxDate) {
-                $startDate = Carbon::createFromTimeString($priceShareMaxDate)->addDay(1);
-            } else {
-                $startDate = $siteStartDate;
-            }
-            if ($endDate->greaterThanOrEqualTo($startDate)) {
-                $oneResults = PriceSharesController::getABCBourseData($share->codeISIN, $startDate, $endDate);
-                $results[$share->id]['name'] = $share->name;
-                $results[$share->id]['codeISIN'] = $share->codeISIN;
-                $results[$share->id]['end'] = $endDate;
-                $results[$share->id]['start'] = $startDate;
-                $results[$share->id]['imported'] = $oneResults['imported'];
-                $results[$share->id]['error'] = $oneResults['error'];
+        $shares = Share::all()->groupBy("type")->sortBy('name');
+        foreach(['share','indice','fund', 'tracker'] as $type) {
+            if(isset($shares[$type])) {
+                foreach ($shares[$type] as $share) {
+                    $priceShareMaxDate = PriceShares::where('share_id', $share->id)->max('date');
+                    if ($priceShareMaxDate) {
+                        $startDate = Carbon::createFromTimeString($priceShareMaxDate)->addDay(1);
+                    } else {
+                        $startDate = $siteStartDate;
+                    }
+                    if ($endDate->greaterThanOrEqualTo($startDate)) {
+                        $oneResults = PriceSharesController::getABCBourseData($share->codeISIN, $startDate, $endDate);
+                        $results[$share->id]['name'] = $share->name;
+                        $results[$share->id]['codeISIN'] = $share->codeISIN;
+                        $results[$share->id]['end'] = $endDate->format("d/m/Y");
+                        $results[$share->id]['start'] = $startDate->format("d/m/Y");
+                        $results[$share->id]['imported'] = $oneResults['imported'];
+                        $results[$share->id]['error'] = $oneResults['error'];
+                    }
+                }
             }
         }
         return view('share.load', compact('results'));

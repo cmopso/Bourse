@@ -12,7 +12,7 @@
             
                 @csrf
                 @method('PUT')
-
+                </p>
                 <p class="text-right"><i class="text-navy">* Champs obligatoires</i></p>
 
                 <div class="form-group">
@@ -74,7 +74,7 @@
                 </div>
 
                 <div class="form-group text-center">
-                    <button class="button is-link" type="submit">Créer</button>
+                    <button class="button is-link" type="submit">Mise à jour</button>
                     
                 </div>
 

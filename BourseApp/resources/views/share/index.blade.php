@@ -2,25 +2,12 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="table-responsive" style="width: 1050px">
+                    <div class="table-responsive" >
                         </p>
-                        <table class="table table-striped table-hover display" id="playerList">
-                            <thead>
-                                <tr>
-                                    <th class="text-left" style="width: 200px">Action</th>
-                                    <th class="text-left" style="width: 100px">Code ISIN</th>
-                                    <th class="text-left" style="width: 100px">Type</th>
-                                    <th class="text-right" style="width: 150px">Quantité</th>
-                                    <th class="text-right" style="width: 150px">Gain/Perte</th>
-                                    <th class="text-right" style="width: 150px">Prix Revient</th>
-                                    <th class="text-right" style="width: 150px">Cours</th>
-                                    <th class="text-center" style="width: 25px"></th>
-                                    <th class="text-center" style="width: 25px"></th>
-                                </tr>
-                            </thead>
+                        <table class="table table-striped table-hover display">
                             <tbody>
                                 <tr>
                                     <form method="POST" action ="/share">
@@ -36,29 +23,59 @@
                                             <select class="form-control form-control-sm" name="type"> 
                                                 <option value="share">Action</option>
                                                 <option value="tracker">Tracker</option>
-                                                <option value="fund">Fond commum de placement</option>
+                                                <option value="fund">FCP</option>
                                                 <option value="indice">Indice</option>
                                             </select>
                                         </td>
-                                    <td colspan=6> <button type="submit" class="btn btn-primary">Ajouter</button></td>
+                                    <td colspan=1> <button type="submit" class="btn btn-primary">Ajouter</button></td>
                                 </tr> 
+                            </tbody>
+                        </table>
+
+                        <table class="table table-striped table-hover table-sm display" id="playerList">
+                            <thead>
+                                <tr>
+                                    <th class="text-left" >Action</th>
+                                    <th class="text-left" >Code ISIN</th>
+                                    <th class="text-right" >Quantité</th>
+                                    <th class="text-right" >Gain/Perte</th>
+                                    <th class="text-right" >Prix Revient</th>
+                                    <th class="text-right" >Cours</th>
+                                    <th class="text-right" >Bénéfice</th>
+                                    <th class="text-center" ></th>
+                                    <th class="text-center" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @foreach(['share','indice','fund', 'tracker'] as $type)
                                     @if(isset($shares[$type]))
+                                        <tr>
+                                            <th colspan=9 class="text-right alert alert-primary">{{$type}}</th>
+                                        </tr>
                                         @foreach($shares[$type] as $share)
                                             <tr>
                                                 <td class="text-left"><a href="{{ route('shareDetail', $share->id) }}">{{ $share->name }}</a></td>
-                                                <td class="text-left">{{ $share->codeISIN }}</td>
-                                                <td class="text-left">{{ $share->type }}</td>
+                                                <td class="text-left">{{$share->codeISIN}}</td>
                                                 @if(isset($analyze[$share->id]))
-                                                    <td class="text-right">{{ number_format($analyze[$share->id]['totalShare'], 2, ',', ' ') }}</td>
-                                                    <td class="text-right">{{ number_format($analyze[$share->id]['totalWinLoss'], 2, ',', ' ') }} €</td>
+                                                    @if($analyze[$share->id]['totalShare'])
+                                                        <td class="text-right">{{ number_format($analyze[$share->id]['totalShare'], 2, ',', ' ') }}</td>
+                                                    @else
+                                                        <td class="text-right">-</td>
+                                                    @endif
+                                                    <td class="text-right"><strong style={{ ($analyze[$share->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$share->id]['totalWinLoss'], 2, ',', ' ') }} €</td>
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['averageCost'], 2, ',', ' ') }} €</td>
                                                     <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
+                                                    @if($analyze[$share->id]['totalShare'])
+                                                        <td class="text-right"><strong style={{ ($analyze[$share->id]['averageCost']<$lastPrices[$share->id]?"color:#00AA00":"color:#FF0000")}}>{{ number_format(($lastPrices[$share->id]- $analyze[$share->id]['averageCost'])*$analyze[$share->id]['totalShare'], 2, ',', ' ') }} €</td>
+                                                    @else
+                                                        <td class="text-right">-</td>
+                                                    @endif
                                                 @else
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
+                                                    <td class="text-right">-</td>
                                                 @endif
                                                 <td class="text-center"><a href="{{ route('shareEdit', $share) }}"><i class="far fa-edit"></i></a></td>
                                                 <td class="text-center"><a href="{{ route('shareDelete', $share) }}"><i class="far fa-trash-alt"></i></a>
@@ -73,6 +90,9 @@
                 </div>
             </div>
         </div>
+
+
+        <!--
         @if(isset($oneShare))
         <div class="col-md-5">
             <div class="ibox float-e-margins">
@@ -125,6 +145,7 @@
         </div>
         @endif
     </div>
+    -->
 @stop
 
 
