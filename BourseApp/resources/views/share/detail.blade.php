@@ -1,41 +1,46 @@
 @extends('layouts/app')
 
 @section('content')
+    
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-12">
+            </p>
+            <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+                <a class="btn btn-primary" href="{{ route('shareDetail', $priceShareData['previous']) }}" role="button">< {{$priceShareData['name'][$priceShareData['previous']]}}</a>
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $oneShare->name}}</button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    @foreach(['share','indice','fund', 'tracker'] as $type)
+                        <a class="dropdown-item" href="#">----- {{$type}} -----</a>
+                        @if(isset($shares[$type]))
+                            @foreach ($shares[$type] as $key => $share)
+                                <a class="dropdown-item" href="{{ route('shareDetail', $share->id) }}">{{$share->name}}</a>
+                            @endforeach
+                        @endif
+                    @endforeach
+                </div>
+                <a class="btn btn-primary" href="{{ route('shareDetail', $priceShareData['next']) }}" role="button">{{$priceShareData['name'][$priceShareData['next']]}}></a>
+
+                <label class="col-form-label nav-link active" style="color:#FFFFFF;">From :</label>
+                <input type="text" id="fromfield" class="amcharts-input form-control col-md-1" />
+                <label class="col-form-label nav-link active" style="color:#FFFFFF;">To :</label>
+                <input type="text" id="tofield" class="amcharts-input form-control col-md-1" />
+                
+                <div class="btn-group btn-group-toggle" role="group" data-toggle="buttons">
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b1m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">1m</label>
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b3m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">3m</label>
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b6m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">6m</label>
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b1y"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">1y</label>
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="bytd"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">YTD</label>
+                    <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="bmax"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">MAX</label>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2" style="margin-left: 0px;">
             <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        </p>
-                        <div class="col-md-1">
-
-                            <div class="btn-group" role="group" aria-label="toolbar" style="margin-left: 0px;"> 
-                                <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $oneShare->name}}</button>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        @foreach(['share','indice','fund', 'tracker'] as $type)
-                                            <a class="dropdown-item" href="#">----- {{$type}} -----</a>
-                                            @if(isset($shares[$type]))
-                                                @foreach ($shares[$type] as $key => $share)
-                                                    <a class="dropdown-item" href="{{ route('shareDetail', $share->id) }}">{{$share->name}}</a>
-                                                @endforeach
-                                            @endif
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            <!--
-                            <select class="form-control form-control-sl" name="shareid" onChange="location = this.options[this.selectedIndex].value;">> 
-                                @foreach(['share','indice','fund', 'tracker'] as $type)
-                                    <option value="">----- {{$type}} -----</option>
-                                    @if(isset($shares[$type]))
-                                        @foreach ($shares[$type] as $share)
-                                        <option value="{{ route('shareDetail', $share->id) }}" {{ ($share->id == $oneShare->id ? "selected":"") }}>{{$share->name}}</option>
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            </select>
-                            -->
-                        </div>
                         <div class="col-md-auto">
                             <small>
                                 @if(isset($analyze[$oneShare->id]))
@@ -58,16 +63,16 @@
                         @include('share.graph')
 
                         @if($orders->count() != 0)
-                        <div class="table-responsive table-sm" style="width: 700px">
+                        <div class="table-responsive table-sm">
                             </p>
                             <table class="table table-striped table-hover display" id="playerList">
                                 <thead>
                                     <tr>
-                                        <th class="text-left" style="width: 150px">Date</th>
-                                        <th class="text-left" style="width: 150px">Ordre</th>
-                                        <th class="text-right" style="width: 100px">Quantité</th>
-                                        <th class="text-right" style="width: 150px">Prix</th>
-                                        <th class="text-right" style="width: 150px">Gain/Perte</th>
+                                        <th class="text-left" >Date</th>
+                                        <th class="text-left" >Ordre</th>
+                                        <th class="text-right" >Quantité</th>
+                                        <th class="text-right" >Prix</th>
+                                        <th class="text-right" >Gain/Perte</th>
                                     </tr>
                                 </thead>
                                 <tbody>

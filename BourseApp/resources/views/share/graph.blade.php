@@ -309,26 +309,4 @@ function updateZoom() {
 </script>
 
 <!-- HTML -->
-<div id="controls" style="width: 100%; overflow: hidden;">
-    <div style="float: left; margin-left: 15px;">
-        From: <input type="text" id="fromfield" class="amcharts-input" />
-        To: <input type="text" id="tofield" class="amcharts-input" />
-    </div>
-    <div style="float: right;">
-    <div class="btn-group" role="group">
-        <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['previous']) }}" role="button">< {{$priceShareData['name'][$priceShareData['previous']]}}</a>
-        <a class="btn btn-outline-success" href="#" role="button">{{$oneShare->name}}</a>
-        <a class="btn btn-success" href="{{ route('shareDetail', $priceShareData['next']) }}" role="button">{{$priceShareData['name'][$priceShareData['next']]}}></a>
-    </div>
-    <div class="btn-group btn-group-toggle" role="group" data-toggle="buttons">
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b1m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">1m</label>
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b3m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">3m</label>
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b6m"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">6m</label>
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="b1y"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">1y</label>
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="bytd"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">YTD</label>
-        <label class="btn btn-primary" class="amcharts-input btn btn-primary" id="bmax"> <input type="radio" class="amcharts-input btn btn-primary" name="options" autocomplete="off">MAX</label>
-      </div>
-    </div>
-</div>
-
 <div id="chartdiv"></div>

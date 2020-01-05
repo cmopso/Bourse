@@ -62,7 +62,11 @@
                                                     @else
                                                         <td class="text-right">-</td>
                                                     @endif
-                                                    <td class="text-right"><strong style={{ ($analyze[$share->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$share->id]['totalWinLoss'], 2, ',', ' ') }} €</td>
+                                                    @if($analyze[$share->id]['totalWinLoss'])
+                                                        <td class="text-right"><strong style={{ ($analyze[$share->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$share->id]['totalWinLoss'], 2, ',', ' ') }} €</td>
+                                                    @else
+                                                        <td class="text-right">-</td>
+                                                    @endif
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['averageCost'], 2, ',', ' ') }} €</td>
                                                     <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
                                                     @if($analyze[$share->id]['totalShare'])
