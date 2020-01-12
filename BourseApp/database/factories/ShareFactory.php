@@ -4,6 +4,7 @@
 
 use App\Share;
 use Faker\Generator as Faker;
+use Carbon\Carbon;
 
 $factory->define(Share::class, function (Faker $faker) {
 

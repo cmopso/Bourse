@@ -59,6 +59,30 @@
 
                 <div class="form-group">
                     <div class="col-md-3">
+                        <label class="label" for="codeISIN">code</label>
+                        <i class="text-navy">*</i>
+                    </div>
+                    <div class="col-md-9">
+                        @if (isset($share))
+                            @if (null !== old('code'))
+                                <input class="form-control @error('code') is-invalid @enderror" type="text" name="code" id="code" value="{{ old('code') }}" required>
+                            @else
+                                <input class="form-control @error('code') is-invalid @enderror" type="text" name="code" id="code" value="{{$share->code }}" required>
+                            @endif
+                        @else
+                            <input class="form-control @error('code') is-invalid @enderror" type="text" name="code" id="code" value="{{ old('code')}}" required>
+                        @endif
+                        @error('code')
+                            <p class="help is-danger">{{ $errors->first('code')}}</p>
+                        @enderror
+                    </div>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <div class="col-md-3">
                         <label class="label" for="type">Type</label> 
                         <i class="text-navy">*</i>
                     </div>

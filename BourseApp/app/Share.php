@@ -11,13 +11,18 @@ class Share extends Model
         'name',
         'codeISIN',
         'type',
+        'code',
+        'dividendDate',
+        'dividendValue',
+        'fiveYearsAvgDividendYield',
+        'yield',
     ];
 
     // if some field should be casted for instance to boolean
 
-    /*protected $casts = [
-    
-    ];*/
+    protected $casts = [
+        'dividendDate'  => 'datetime',
+    ];
 
     protected $dates = ['created_at', 'updated_at'];
 

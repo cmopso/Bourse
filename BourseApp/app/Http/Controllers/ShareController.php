@@ -26,6 +26,7 @@ class ShareController extends Controller
 
     public function detail(Share $share)
     {
+        
         $oneShare = $share;
         $shares = Share::all()->groupBy("type")->sortBy('name');
 
@@ -36,7 +37,7 @@ class ShareController extends Controller
         $orders = OrderController::prepareDisplay($orders);
 
         $priceShareData = PriceSharesController::getAllPrices($oneShare);
-    
+        
         return view('share.detail', compact('shares', 'oneShare', 'orders', 'analyze', 'lastPrices', 'priceShareData'));
     }
 
@@ -85,6 +86,7 @@ class ShareController extends Controller
             'name' => 'required|unique:shares,name',
             'codeISIN' => 'required|unique:shares,codeISIN',
             'type' => 'required',
+            'code' => 'required',
         ]);
 
         return $validatedAttributes;
@@ -96,6 +98,7 @@ class ShareController extends Controller
             'name' => ['required', Rule::unique('shares')->ignore($share->id),],
             'codeISIN' => ['required', Rule::unique('shares')->ignore($share->id),],
             'type' => 'required',
+            'code' => 'required',
         ]);
 
         return $validatedAttributes;

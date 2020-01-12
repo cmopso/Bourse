@@ -9,5 +9,8 @@
         <li class="nav-item active">
             <a class="nav-link" href="{{ route('loadPrices') }}">Charger les cours </a>
         </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('loadFinancialData') }}">Charger les données financières </a>
+        </li>
     </ul>
 </div>

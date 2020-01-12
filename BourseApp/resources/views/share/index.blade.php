@@ -19,6 +19,9 @@
                                         <td> <input type="text" class="form-control @error('codeISIN') is-invalid @enderror" name="codeISIN" value="{{ old('codeISIN')}}" required placeholder="code ISIN">
                                             @error('codeISIN') <p class="help is-danger">{{ $errors->first('codeISIN')}}</p> @enderror
                                         </td>
+                                        <td> <input type="text" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code')}}" required placeholder="code">
+                                            @error('code') <p class="help is-danger">{{ $errors->first('code')}}</p> @enderror
+                                        </td>
                                         <td> 
                                             <select class="form-control form-control-sm" name="type"> 
                                                 <option value="share">Action</option>
@@ -37,6 +40,7 @@
                                 <tr>
                                     <th class="text-left" >Action</th>
                                     <th class="text-left" >Code ISIN</th>
+                                    <th class="text-left" >Code</th>
                                     <th class="text-right" >Quantité</th>
                                     <th class="text-right" >Gain/Perte</th>
                                     <th class="text-right" >Prix Revient</th>
@@ -50,12 +54,13 @@
                                 @foreach(['share','indice','fund', 'tracker'] as $type)
                                     @if(isset($shares[$type]))
                                         <tr>
-                                            <th colspan=9 class="text-right alert alert-primary">{{$type}}</th>
+                                            <th colspan=10 class="text-right alert alert-primary">{{$type}}</th>
                                         </tr>
                                         @foreach($shares[$type] as $share)
                                             <tr>
                                                 <td class="text-left"><a href="{{ route('shareDetail', $share->id) }}">{{ $share->name }}</a></td>
                                                 <td class="text-left">{{$share->codeISIN}}</td>
+                                                <td class="text-left">{{$share->code}}</td>
                                                 @if(isset($analyze[$share->id]))
                                                     @if($analyze[$share->id]['totalShare'])
                                                         <td class="text-right">{{ number_format($analyze[$share->id]['totalShare'], 2, ',', ' ') }}</td>

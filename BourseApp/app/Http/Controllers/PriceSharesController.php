@@ -13,9 +13,9 @@ class PriceSharesController extends Controller
 {
     // load prices for all shares from last (or site start date) request to today's date
     public static function loadPrices() 
-    {
+    {    
         $results = [];
-        $siteStartDate = Carbon::createFromFormat("!d/m/y", "01/01/18");
+        $siteStartDate = Carbon::today()->subYear(2); //Carbon::createFromFormat("!d/m/y", "01/12/19");
         $endDate = Carbon::today()->startOfDay();
         // ISO weekday from 1 (Monday) to 7 (Sunday) 
         // if today is the week end, we consider last friday 
@@ -143,6 +143,7 @@ class PriceSharesController extends Controller
     // [cac]
     // [same]
     // [color]
+    // [history]
     public static function getAllPrices($share) 
     {
         $priceShareData = [];
@@ -161,6 +162,8 @@ class PriceSharesController extends Controller
 
         // get share data prices, min, max, buy and sales
         $prices = PriceShares::where("share_id", $share->id)->orderBy("date")->get();
+        if ($prices->count() == 0) return $priceShareData;
+        
         $day = $prices[0]->date->day;
         $month = $prices[0]->date->month;
         $year = $prices[0]->date->year;
@@ -197,6 +200,35 @@ class PriceSharesController extends Controller
             $day = $order->passedOn->day;
             $priceShareData[$order->type][$year . "-" . str_pad($month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($day, 2, "0", STR_PAD_LEFT)] = $order->price;
         }
+        
+        // create history data
+        $lastKey = array_key_last($priceShareData["price"]);
+        $today = carbon::today();
+
+        foreach(['1er Janvier' => 0, '1 semaine' => 5, '1 mois' => 30, '3 mois' => 91, '6 mois' => 182, '1 an' => 365] as $key => $gap) {
+            $lastDate = Carbon::createFromFormat('Y-m-d', $lastKey);
+            $lastPrice = $priceShareData["price"][$lastKey];
+            
+            if ($gap == 0) 
+                $nextDate = Carbon::createFromFormat('Y-m-d', $lastDate->year - 1 . "-12-31");
+            else   
+                $nextDate = $lastDate->subDay($gap);
+
+            if ($nextDate->isWeekend()) $nextDate = $nextDate->previousWeekday();
+            
+            if (isset($priceShareData["price"][$nextDate->year . "-" . str_pad($nextDate->month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($nextDate->day, 2, "0", STR_PAD_LEFT)]))
+                $newPrice = $priceShareData["price"][$nextDate->year . "-" . str_pad($nextDate->month, 2, "0", STR_PAD_LEFT) . "-" . str_pad($nextDate->day, 2, "0", STR_PAD_LEFT)];
+            else
+                $newPrice = 0;
+            if ($newPrice != 0) {
+                $priceShareData["history"]["value"][$key] = $newPrice;
+                $priceShareData["history"]["percent"][$key] = ($lastPrice - $newPrice) / $newPrice * 100;
+            } else  {
+                $priceShareData["history"]["value"][$key] = "-";
+                $priceShareData["history"]["percent"][$key] = "-";
+            }
+        }
+        //dd($priceShareData["history"]);
 
         // get CAC 40
         $indice = Share::where("codeISIN", "FR0003500008")->first();
@@ -246,4 +278,76 @@ class PriceSharesController extends Controller
         return $priceShareData;
     }
 
+
+    public static function loadFinancialData() 
+    {        
+        $results = [];
+        
+        $shares = Share::all()->groupBy("type")->sortBy('name');
+        foreach(['share','indice','fund', 'tracker'] as $type) {
+            if(isset($shares[$type])) {
+                foreach ($shares[$type] as $share) {
+                    $oneResults = PriceSharesController::getYahooFinanceData($share);
+                    
+                    $results[$share->id]['name'] = $share->name;
+                    $results[$share->id]['codeISIN'] = $share->codeISIN;
+                    $results[$share->id]['end'] = ""; 
+                    $results[$share->id]['start'] = "";
+                    $results[$share->id]['imported'] = $oneResults['imported'];
+                    $results[$share->id]['error'] = $oneResults['error'];
+                }
+            }
+        }
+        return view('share.load', compact('results'));
+
+
+    }
+
+    public static function getYahooFinanceData($share)
+    {
+        $results = [];
+        $results['imported'] = 0;
+        $results['error'] = 0;
+        
+        if ($share->code != "") {
+    
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/get-detail?region=FR&lang=fr&symbol=". $share->code,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                    "x-rapidapi-host: apidojo-yahoo-finance-v1.p.rapidapi.com",
+                    "x-rapidapi-key: 4dd320036emsh20e4b406d3c1a54p1a69c5jsna0b109ee9c32"
+                ),
+            ));
+            
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            
+            curl_close($curl);
+            
+            if ($err) {
+                dd("cURL Error #:" . $err);
+                $results['error'] = 1;
+            } else {
+                $reponseDecode = json_decode($response);
+                //dd($reponseDecode);
+
+                $share->dividendDate = $reponseDecode->calendarEvents->exDividendDate->fmt;
+                $share->dividendValue = $reponseDecode->summaryDetail->dividendRate->raw;
+                $share->fiveYearsAvgDividendYield = $reponseDecode->summaryDetail->fiveYearAvgDividendYield->raw;
+                $share->yield = 100 * $reponseDecode->summaryDetail->dividendRate->raw / $reponseDecode->summaryDetail->previousClose->raw;
+                $share->save();
+                $results['imported'] = 1;
+            }
+        }
+        return $results;
+    }
 }
