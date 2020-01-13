@@ -228,7 +228,12 @@ class PriceSharesController extends Controller
                 $priceShareData["history"]["percent"][$key] = "-";
             }
         }
-        //dd($priceShareData["history"]);
+        $lastPrice = end($priceShareData["price"]);
+        $previousPrice = prev($priceShareData["price"]);
+        $priceShareData["history"]["value"]["Veille"] = $previousPrice;
+        $priceShareData["history"]["percent"]["Veille"] = ($lastPrice - $previousPrice) / $previousPrice * 100; 
+        //dd($previousPrice);
+        //dd($priceShareData["price"]);
 
         // get CAC 40
         $indice = Share::where("codeISIN", "FR0003500008")->first();

@@ -70,7 +70,7 @@
                                             @foreach ($priceShareData["history"]["value"] as $key => $value)
                                                 <tr>
                                                     <td class="text-left">{{ $key}}</td>
-                                                    @if ($priceShareData["history"]["percent"][$key] != "-")
+                                                    @if ($priceShareData["history"]["value"][$key] != "-")
                                                         <td class="text-right"><strong style={{ ($priceShareData["history"]["percent"][$key]>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($priceShareData["history"]["percent"][$key], 2, ',', ' ') }} %</td>
                                                         <td class="text-right">{{ number_format($priceShareData["history"]["value"][$key], 2, ',', ' ') }} €</td>
                                                     @else
@@ -79,6 +79,13 @@
                                                     @endif
                                                 </tr>
                                             @endforeach
+                                            @if(isset($analyze[$oneShare->id]['totalShare']))
+                                                <tr>
+                                                    <td class="text-left">Prix revient</td> 
+                                                    <td class="text-right"><strong style={{ (($lastPrices[$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format(100* ($lastPrices[$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} %</td>
+                                                    <td class="text-right">{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</td>
+                                                </tr>
+                                            @endif
                                         @endif
                                     </tbody>
                                 </table>
