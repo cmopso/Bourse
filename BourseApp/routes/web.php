@@ -41,4 +41,5 @@ Route::put('/share/{share}', 'ShareController@update')->name('shareUpdate')->mid
 Route::get('/share/{share}/delete', 'ShareController@destroy')->name('shareDelete')->middleware('auth');
 
 Route::get('/loadPrices', 'PriceSharesController@loadPrices')->name('loadPrices')->middleware('auth');
+Route::get('/loadPricesAPI', 'PriceSharesController@loadPricesAPI')->name('loadPricesAPI');
 Route::get('/loadFinancialData', 'PriceSharesController@loadFinancialData')->name('loadFinancialData')->middleware('auth');

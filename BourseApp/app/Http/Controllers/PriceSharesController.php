@@ -11,8 +11,14 @@ use Carbon\Carbon;
 
 class PriceSharesController extends Controller
 {
+    public static function loadPricesAPI() {
+
+        $resultmessage = PriceSharesController::loadPrices(true);
+        return response()->json(['message' => $resultmessage], 200);
+    } 
+
     // load prices for all shares from last (or site start date) request to today's date
-    public static function loadPrices() 
+    public static function loadPrices($apicall = false) 
     {    
         $results = [];
         $siteStartDate = Carbon::today()->subYear(2); //Carbon::createFromFormat("!d/m/y", "01/12/19");
@@ -44,7 +50,10 @@ class PriceSharesController extends Controller
                 }
             }
         }
-        return view('share.load', compact('results'));
+        if ($apicall == true) 
+            return $results;
+        else
+            return view('share.load', compact('results'));
     }
 
     public static function getABCBourseData($codeISIN, $start, $end)
