@@ -57,7 +57,7 @@
                                 @foreach(['share','indice','fund', 'tracker'] as $type)
                                     @if(isset($shares[$type]))
                                         <tr>
-                                            <th colspan=11 class="text-right alert alert-primary">{{$type}}</th>
+                                            <th colspan=13 class="text-right alert alert-primary">{{$type}}</th>
                                         </tr>
                                         @foreach($shares[$type] as $share)
                                             <tr>
