@@ -46,6 +46,8 @@
                                     <th class="text-right" >Prix Revient</th>
                                     <th class="text-right" >Cours</th>
                                     <th class="text-right" >Bénéfice</th>
+                                    <th class="text-center" >%</th>
+                                    <th class="text-right" >Mise à jour</th>
                                     <th class="text-center" ></th>
                                     <th class="text-center" ></th>
                                 </tr>
@@ -54,7 +56,7 @@
                                 @foreach(['share','indice','fund', 'tracker'] as $type)
                                     @if(isset($shares[$type]))
                                         <tr>
-                                            <th colspan=10 class="text-right alert alert-primary">{{$type}}</th>
+                                            <th colspan=11 class="text-right alert alert-primary">{{$type}}</th>
                                         </tr>
                                         @foreach($shares[$type] as $share)
                                             <tr>
@@ -73,19 +75,23 @@
                                                         <td class="text-right">-</td>
                                                     @endif
                                                     <td class="text-right">{{ number_format($analyze[$share->id]['averageCost'], 2, ',', ' ') }} €</td>
-                                                    <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
+                                                    <td class="text-right">{{ number_format($lastPrices["value"][$share->id], 2, ',', ' ') }} €</td>
                                                     @if($analyze[$share->id]['totalShare'])
-                                                        <td class="text-right"><strong style={{ ($analyze[$share->id]['averageCost']<$lastPrices[$share->id]?"color:#00AA00":"color:#FF0000")}}>{{ number_format(($lastPrices[$share->id]- $analyze[$share->id]['averageCost'])*$analyze[$share->id]['totalShare'], 2, ',', ' ') }} €</td>
+                                                        <td class="text-right"><strong style={{ ($analyze[$share->id]['averageCost']<$lastPrices["value"][$share->id]?"color:#00AA00":"color:#FF0000")}}>{{ number_format(($lastPrices["value"][$share->id]- $analyze[$share->id]['averageCost'])*$analyze[$share->id]['totalShare'], 2, ',', ' ') }} €</td>
+                                                        <td class="text-right"><strong style={{ ($analyze[$share->id]['averageCost']<$lastPrices["value"][$share->id]?"color:#00AA00":"color:#FF0000")}}>{{ number_format(($lastPrices["value"][$share->id]- $analyze[$share->id]['averageCost'])/$analyze[$share->id]['averageCost'] * 100, 2, ',', ' ') }} %</td>
                                                     @else
+                                                        <td class="text-right">-</td>
                                                         <td class="text-right">-</td>
                                                     @endif
                                                 @else
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
-                                                    <td class="text-right">{{ number_format($lastPrices[$share->id], 2, ',', ' ') }} €</td>
+                                                    <td class="text-right">{{ number_format($lastPrices["value"][$share->id], 2, ',', ' ') }} €</td>
+                                                    <td class="text-right">-</td>
                                                     <td class="text-right">-</td>
                                                 @endif
+                                                <td class="text-center">{{$lastPrices["message"][$share->id]}}</td>
                                                 <td class="text-center"><a href="{{ route('shareEdit', $share) }}"><i class="far fa-edit"></i></a></td>
                                                 <td class="text-center"><a href="{{ route('shareDelete', $share) }}"><i class="far fa-trash-alt"></i></a>
                                                 </td>

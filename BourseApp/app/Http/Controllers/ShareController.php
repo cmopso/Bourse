@@ -7,6 +7,7 @@ use App\Order;
 use App\PriceShares;
 use App\Http\Controllers\PriceSharesController;
 use App\Http\Controllers\OrderController;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -140,14 +141,30 @@ class ShareController extends Controller
     public function getLastPriceAllShare()
     {
         $lastPrices = [];
-
+        //$today = Carbon::today();
         $shares = Share::all();
+        
         foreach ($shares as $share) {
             $sharePrice = PriceShares::where('share_id', $share->id)->orderBy('date', 'desc')->first();
             if ($sharePrice) {
-                $lastPrices[$share->id] = $sharePrice->close;    
+                $lastPrices["value"][$share->id] = $sharePrice->close;
+                $lastPrices["date"][$share->id] = $sharePrice->date->format("d/m/Y");  
+                if (Carbon::today()->isWeekend()) {
+                    //dd($sharePrice->date->format("d/m/Y") . " " . Carbon::today()->previousWeekday()->format("d/m/Y"));
+                    if ($sharePrice->date->format("d/m/Y") == Carbon::today()->previousWeekday()->format("d/m/Y"))
+                        $lastPrices["message"][$share->id] = "OK";
+                    else
+                        $lastPrices["message"][$share->id] = $sharePrice->date->format("d/m/Y");
+                } else {
+                    if ($sharePrice->date->format("d/m/Y") == Carbon::today()->previousWeekday()->format("d/m/Y"))
+                        $lastPrices["message"][$share->id] = "OK";
+                    else
+                        $lastPrices["message"][$share->id] = $sharePrice->date->format("d/m/Y");
+                }
             } else {
-                $lastPrices[$share->id] = 0;
+                $lastPrices["value"][$share->id] = 0;
+                $lastPrices["date"][$share->id] = "";
+                $lastPrices["message"][$share->id] = "Pas de donnée";
             }
         }
 

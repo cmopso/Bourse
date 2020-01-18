@@ -48,10 +48,10 @@
                                 @if(isset($analyze[$oneShare->id]))
                                     <strong>{{ $analyze[$oneShare->id]['totalShare'] }}</strong> actions en portefeuille. </br>
                                     Le prix de revient est de <strong>{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</strong> </br>
-                                    Le cours actuel est de <strong>{{ number_format($lastPrices[$oneShare->id], 2, ',', ' ') }} €</strong> </br>
+                                    Le cours actuel est de <strong>{{ number_format($lastPrices["value"][$oneShare->id], 2, ',', ' ') }} €</strong> </br>
                                     Le cumul des Gains & pertes est de <strong style={{ ($analyze[$oneShare->id]['totalWinLoss']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalWinLoss'], 2, ',', ' ') }} €</strong>.</br>
                                     @if ($analyze[$oneShare->id]['totalShare'])
-                                        Les Gains/pertes en cours sont de <strong style={{ (($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']))>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices[$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €</strong></br>
+                                        Les Gains/pertes en cours sont de <strong style={{ (($analyze[$oneShare->id]['totalShare'] * ($lastPrices["value"][$oneShare->id] - $analyze[$oneShare->id]['averageCost']))>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format($analyze[$oneShare->id]['totalShare'] * ($lastPrices["value"][$oneShare->id] - $analyze[$oneShare->id]['averageCost']),2, ',', ' ') }} €</strong></br>
                                     @endif
                                     Dividende de <strong>{{ $oneShare->dividendValue}} €</strong> soit {{$oneShare->yield}} % (moy. {{ $oneShare->fiveYearsAvgDividendYield}} %) versé le {{ $oneShare->dividendDate->day}}/{{ $oneShare->dividendDate->month}}.</br>
                                 @endif
@@ -82,7 +82,7 @@
                                             @if(isset($analyze[$oneShare->id]['totalShare']))
                                                 <tr>
                                                     <td class="text-left">Prix revient</td> 
-                                                    <td class="text-right"><strong style={{ (($lastPrices[$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format(100* ($lastPrices[$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} %</td>
+                                                    <td class="text-right"><strong style={{ (($lastPrices["value"][$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost']>0?"color:#00AA00":"color:#FF0000")}}>{{ number_format(100* ($lastPrices["value"][$oneShare->id] -$analyze[$oneShare->id]['averageCost'])/$analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} %</td>
                                                     <td class="text-right">{{ number_format($analyze[$oneShare->id]['averageCost'], 2, ',', ' ') }} €</td>
                                                 </tr>
                                             @endif

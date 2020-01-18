@@ -34,7 +34,7 @@ class PriceSharesController extends Controller
                 foreach ($shares[$type] as $share) {
                     $priceShareMaxDate = PriceShares::where('share_id', $share->id)->max('date');
                     if ($priceShareMaxDate) {
-                        $startDate = Carbon::createFromTimeString($priceShareMaxDate)->addDay(1);
+                        $startDate = Carbon::createFromTimeString($priceShareMaxDate)->addDay(1)->startOfDay();
                     } else {
                         $startDate = $siteStartDate;
                     }
