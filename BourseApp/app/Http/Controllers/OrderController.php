@@ -117,9 +117,9 @@ class OrderController extends Controller
         $averageCost = 0;
         $totalWinLoss =0;
         $winLoss = [];
-        $orders->sortBy('passedOn');
+        $sortedOrders = $orders->sortBy('passedOn');
 
-        foreach ($orders as $order) {
+        foreach ($sortedOrders as $order) {
             switch ($order->type) {
                 case 'buy':
                     $averageCost = ($order->quantity * $order->price + $totalShare * $averageCost) / ( $totalShare + $order->quantity);

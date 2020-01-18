@@ -173,12 +173,12 @@
                     <div class="col-md-9">
                         @if (isset($order))
                             @if (null !== old('comment'))
-                                <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{ old('comment') }}" required>
+                                <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{ old('comment') }}">
                             @else
-                                <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{$order->comment }}" required>
+                                <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{$order->comment }}">
                             @endif
                         @else
-                            <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{ old('comment')}}" required>
+                            <input class="form-control @error('comment') is-invalid @enderror" type="text" name="comment" id="comment" value="{{ old('comment')}}">
                         @endif
                         @error('comment')
                             <p class="help is-danger">{{ $errors->first('comment')}}</p>
