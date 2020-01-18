@@ -42,7 +42,8 @@ class OrderController extends Controller
     
     public function edit(Order $order)
     {
-        return view('order.edit', compact('order'));
+        $shares = Share::all()->sortBy('name');
+        return view('order.create', compact('order', 'shares'));
     }
 
     
@@ -82,17 +83,18 @@ class OrderController extends Controller
     public function validateUpdateOrder(Order $order)
     {
         $validatedAttributes = request()->validate([
-            'passedOn'          => 'required',
-            'type'              => 'required', 
-            'price'             => 'required',
-            'quantity'          => 'required',
-            'totalPrice'        => 'required',
-            'totalchargedPrice' => 'required',
-            'charges'           => 'required',
-            'chargesPercent'   => 'required',
-            'comment'           => 'required',
+            'share_id'          => 'required',
+            'passedOn'          => 'required|date_format:d/m/Y',
+            'type'              => ['required', Rule::in(['buy','sale','dividend','other'])],
+            'quantity'          => 'required|numeric',
+            'price'             => 'required|numeric',
+            'totalPrice'        => 'required|numeric',
+            'totalChargedPrice' => 'required|numeric',
+            'comment'           => 'nullable',
         ]);
-
+        $validatedAttributes['passedOn'] = Carbon::createFromFormat("d/m/Y", $validatedAttributes['passedOn']);
+        $validatedAttributes['charges'] = abs($validatedAttributes['totalPrice'] - $validatedAttributes['totalChargedPrice']);
+        $validatedAttributes['chargesPercent'] = $validatedAttributes['charges'] / $validatedAttributes['totalPrice'] * 100;
         return $validatedAttributes;
     }
 
