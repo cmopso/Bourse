@@ -29,7 +29,7 @@ class PriceSharesController extends Controller
             $endDate->subDay($endDate->isoWeekday() - 5);
         }
         $shares = Share::all()->groupBy("type")->sortBy('name');
-        foreach(['share','indice','fund', 'tracker'] as $type) {
+        foreach(['share', 'option', 'indice','fund', 'tracker'] as $type) {
             if(isset($shares[$type])) {
                 foreach ($shares[$type] as $share) {
                     $priceShareMaxDate = PriceShares::where('share_id', $share->id)->max('date');
@@ -298,7 +298,7 @@ class PriceSharesController extends Controller
         $results = [];
         
         $shares = Share::all()->groupBy("type")->sortBy('name');
-        foreach(['share','indice','fund', 'tracker'] as $type) {
+        foreach(['share', 'option', 'indice','fund', 'tracker'] as $type) {
             if(isset($shares[$type])) {
                 foreach ($shares[$type] as $share) {
                     $oneResults = PriceSharesController::getYahooFinanceData($share);

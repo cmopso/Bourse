@@ -90,6 +90,7 @@
                     <div class="col-md-9">
                         <select name="type" id="type">
                             <option value="share">Action</option>
+                            <option value="option">Option</option>
                             <option value="tracker">Tracker</option>
                             <option value="fund">Fond commum de placement</option>
                             <option value="indice">Indice</option>

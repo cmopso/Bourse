@@ -22,7 +22,29 @@ class ShareController extends Controller
         $shares = $this->prepareDisplay($shares);
         $analyze = OrderController::analyzeAllOrders();
         $lastPrices = $this->getLastPriceAllShare();
-        return view('share.index', compact('shares', 'analyze', 'lastPrices'));
+        
+        $summary = [];
+        foreach ($shares as $type => $sharesType) {
+            $summary[$type]['totalWinLoss'] = 0;
+            $summary[$type]['totalBenefit'] = 0;
+            $summary[$type]['totalValue'] = 0;
+            $summary[$type]['totalInvested'] = 0;
+            $summary[$type]['totalBenefitPercent'] = 0;
+            foreach ($sharesType as $share) {
+                if (isset($analyze[$share->id]['totalWinLoss']))
+                    $summary[$type]['totalWinLoss'] = $summary[$type]['totalWinLoss'] + $analyze[$share->id]['totalWinLoss'];
+                if (isset($analyze[$share->id]['totalShare'])) {
+                    $summary[$type]['totalBenefit'] = $summary[$type]['totalBenefit'] + ($lastPrices["value"][$share->id]- $analyze[$share->id]['averageCost'])*$analyze[$share->id]['totalShare'];
+                    $summary[$type]['totalValue'] = $summary[$type]['totalValue'] + $lastPrices["value"][$share->id] * $analyze[$share->id]['totalShare'];
+                    $summary[$type]['totalInvested'] = $summary[$type]['totalInvested'] + $analyze[$share->id]['totalShare'] * $analyze[$share->id]['averageCost'];
+                }
+            }
+            if ($summary[$type]['totalInvested'] != 0)
+                $summary[$type]['totalBenefitPercent'] = $summary[$type]['totalBenefit'] / $summary[$type]['totalInvested'];
+        }
+        //dd($summary);
+        //dd($analyze);
+        return view('share.index', compact('shares', 'analyze', 'lastPrices', 'summary'));
     }
 
     public function detail(Share $share)
@@ -108,7 +130,7 @@ class ShareController extends Controller
     public function prepareDisplay(Collection $shares)
     {
         $shares = $shares->groupBy('type');
-        foreach(['share', 'indice', 'fund', 'tracker'] as $type) {
+        foreach(['share', 'option', 'indice', 'fund', 'tracker'] as $type) {
             if (isset($shares[$type])) {
                 $shares[$type]->sortBy(function($share)
                     {
@@ -116,12 +138,14 @@ class ShareController extends Controller
                         {
                             case 'share':
                                 return 1;
-                            case 'indice':
+                            case 'option':
                                 return 2;
-                            case 'fund':
+                            case 'indice':
                                 return 3;
-                            case 'tracker':
+                            case 'fund':
                                 return 4;
+                            case 'tracker':
+                                return 5;
                         }
                     }
                 );
@@ -130,6 +154,7 @@ class ShareController extends Controller
         foreach($shares as $shareType) {
             foreach($shareType as $share) {
                 if ($share->type == "share") $share->type = "Action";
+                if ($share->type == "option") $share->type = "Option";
                 if ($share->type == "tracker") $share->type = "Tracker";
                 if ($share->type == "fund") $share->type = "FCP";
                 if ($share->type == "indice") $share->type = "Indice";

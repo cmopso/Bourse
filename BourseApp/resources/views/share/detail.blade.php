@@ -10,7 +10,7 @@
                     <a class="btn btn-primary" href="{{ route('shareDetail', $priceShareData['previous']) }}" role="button">< {{$priceShareData['name'][$priceShareData['previous']]}}</a>
                     <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $oneShare->name}}</button>
                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        @foreach(['share','indice','fund', 'tracker'] as $type)
+                        @foreach(['share', 'option', 'indice','fund', 'tracker'] as $type)
                             <a class="dropdown-item" href="#">----- {{$type}} -----</a>
                             @if(isset($shares[$type]))
                                 @foreach ($shares[$type] as $key => $share)

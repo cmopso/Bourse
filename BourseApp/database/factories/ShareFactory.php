@@ -8,7 +8,7 @@ use Carbon\Carbon;
 
 $factory->define(Share::class, function (Faker $faker) {
 
-    $type = array('share','tracker','fund','indice');
+    $type = array('share', 'option', 'tracker','fund','indice');
 
     return [
         'name'          => $faker->unique()->name,

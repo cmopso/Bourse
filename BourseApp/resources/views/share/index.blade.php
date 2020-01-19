@@ -5,7 +5,7 @@
         <div class="col-md-auto">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="table-responsive" >
+                    <div class="table-responsive overflow-hidden">
                         </p>
                         <table class="table table-striped table-hover display">
                             <tbody>
@@ -25,6 +25,7 @@
                                         <td> 
                                             <select class="form-control form-control-sm" name="type"> 
                                                 <option value="share">Action</option>
+                                                <option value="option">Option</option>
                                                 <option value="tracker">Tracker</option>
                                                 <option value="fund">FCP</option>
                                                 <option value="indice">Indice</option>
@@ -54,10 +55,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(['share','indice','fund', 'tracker'] as $type)
+                                @foreach(['share', 'option', 'indice','fund', 'tracker'] as $type)
                                     @if(isset($shares[$type]))
                                         <tr>
-                                            <th colspan=13 class="text-right alert alert-primary">{{$type}}</th>
+                                            <th colspan=4 class="text-right alert alert-primary"></th>
+                                            <th colspan=1 class="text-right alert alert-primary">{{number_format($summary[$type]['totalWinLoss'], 2, ',', ' ')}} €</th>
+                                            <th colspan=2 class="text-right alert alert-primary"></th>
+                                            <th colspan=1 class="text-right alert alert-primary">{{number_format($summary[$type]['totalBenefit'], 2, ',', ' ')}} €</th>
+                                            <th colspan=1 class="text-right alert alert-primary">{{number_format($summary[$type]['totalBenefitPercent']*100, 2, ',', ' ')}} %</th>
+                                            <th colspan=1 class="text-right alert alert-primary">{{number_format($summary[$type]['totalValue'], 2, ',', ' ') }} €</th>
+                                            <th colspan=3 class="text-right alert alert-primary">{{$type}}</th>
                                         </tr>
                                         @foreach($shares[$type] as $share)
                                             <tr>
