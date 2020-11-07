@@ -90,7 +90,7 @@ class PriceSharesController extends Controller
             //"cache-control: no-cache"
           ),
         ));
-        
+        dd($response);
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
