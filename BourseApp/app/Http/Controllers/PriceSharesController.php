@@ -98,6 +98,7 @@ class PriceSharesController extends Controller
         if ($err) {
           dd("cURL Error #:" . $err);
         } else {
+            dd($response);
             $lines = explode(PHP_EOL, $response);
             $array = array();
             foreach ($lines as $line) {
@@ -116,8 +117,7 @@ class PriceSharesController extends Controller
         $results = [];
         $results['imported'] = 0;
         $results['error'] = 0;
-        dd($dataArray);
-        
+
         if (count($dataArray) <> 7) {
             $results['error'] = 1;
         } else {
