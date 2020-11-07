@@ -79,10 +79,10 @@ class PriceSharesController extends Controller
           CURLOPT_POSTFIELDS => "__VIEWSTATE=/wEPDwUKLTYyNTE5ODYxNWQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFikFFmN0bDAwJEJvZHlBQkMkZXVyb2xpc3QFHGN0bDAwJEJvZHlBQkMkYWN0aW9uc2luZGljZXMFGmN0bDAwJEJvZHlBQkMkYWN0aW9uc2luZHVzBRVjdGwwMCRCb2R5QUJDJGNvbXBsZXQFG2N0bDAwJEJvZHlBQkMkY29tcGxldG5vd2FycgUSY3RsMDAkQm9keUFCQyRzcmRwBRhjdGwwMCRCb2R5QUJDJGluZGljZXNta3AFGWN0bDAwJEJvZHlBQkMkaW5kaWNlc3NlY3AFGGN0bDAwJEJvZHlBQkMkZXVyb2xpc3RhcAUYY3RsMDAkQm9keUFCQyRldXJvbGlzdGJwBRhjdGwwMCRCb2R5QUJDJGV1cm9saXN0Y3AFFGN0bDAwJEJvZHlBQkMkZXVyb2dwBRRjdGwwMCRCb2R5QUJDJGV1cm9hcAUUY3RsMDAkQm9keUFCQyR0cmFja3AFE2N0bDAwJEJvZHlBQkMkb2JsMnAFEmN0bDAwJEJvZHlBQkMkb2JscAUWY3RsMDAkQm9keUFCQyR3YXJyYW50cwUXY3RsMDAkQm9keUFCQyRvcGN2bTM2MHAFFWN0bDAwJEJvZHlBQkMkeGNhYzQwcAUWY3RsMDAkQm9keUFCQyR4c2JmMTIwcAUVY3RsMDAkQm9keUFCQyR4Y2FjYXRwBRZjdGwwMCRCb2R5QUJDJHhjYWNuMjBwBRhjdGwwMCRCb2R5QUJDJHhjYWNzbWFsbHAFFWN0bDAwJEJvZHlBQkMkeGNhYzYwcAUWY3RsMDAkQm9keUFCQyR4Y2FjbDYwcAUVY3RsMDAkQm9keUFCQyR4Y2FjbXNwBRVjdGwwMCRCb2R5QUJDJHhiZWwyMGcFFWN0bDAwJEJvZHlBQkMkeGFleDI1bgURY3RsMDAkQm9keUFCQyRkanUFEmN0bDAwJEJvZHlBQkMkbmFzdQUUY3RsMDAkQm9keUFCQyRzcDUwMHUFFmN0bDAwJEJvZHlBQkMkZ2VybWFueWYFEmN0bDAwJEJvZHlBQkMkdXNhdQURY3RsMDAkQm9keUFCQyR1a2UFEmN0bDAwJEJvZHlBQkMkYmVsZwUTY3RsMDAkQm9keUFCQyRob2xsbgUVY3RsMDAkQm9keUFCQyRpdGFsaWFpBRVjdGwwMCRCb2R5QUJDJGxpc2JvYWwFEmN0bDAwJEJvZHlBQkMkZGV2cAUVY3RsMDAkQm9keUFCQyRvbmVTaWNvBRNjdGwwMCRCb2R5QUJDJGNiWWVzQBUbankDQfDPut9hLeUwmgZ+ndI%3D&__VIEWSTATEGENERATOR=0EFFD687&__EVENTVALIDATION=/wEdADZY/lQ1VbAQaRan4E3F8m9hE4nQ3ZZKaNp1PLaBt422ojt20EeIGI5psEuMuMm7J99ysS2ch4X+DI3v5dlsbGTvKG6Mpl/Cv2sH6QGHawEZG6IvMtA9WimvGEQ27mZPYQlQfpBN4GWLYqVM3t48zQzQjBARDFhRDnPjRxG0m8PBbzRWHV8gFLsbevtI22XOTcJtRg9EKKE5vey1FPRlCqZyDgvrv9lvrlshrlzdNlGwoiScZo6eZpFvA3jP6HCOVvFpr1zAysJmK7wSgu6Z1lALVnKTKFbEpjgjnZ5VyHKF7hs2GHULoUz7A1s0kmfr7E4FobglHvNHUGGj3kfcAJCxvkYLOMZtGPFq8wOue+L3aBK7Gzh9U1V6eP1sHA0y133ZehnR+AAXHRVhGmBS5vHpoZmrulbiQC7mbx9vlyLTOCaFj1P1ns1k7saP20CtOv7yE4oeSMQcqAToKX4+VY/oKwHPZ3LL3fdWqV0S/vWmetYHl+XtIMfr4sJ5HoKPeEGaXWKkENsUVjCs33ftb+k6Vh68XGlO5A7hLzsl2zmozVHKtnVHMqNjuSl/VTLUSxGOrSXMajdQMItHxDOD4gI5oZA/rQy55rsm3Yy+uTl0/nRrfHed0TzZAp/+y2dFmxusO8axFlSjvdrqSAJF9oAESNvpV6G124LKs01uIQT+zPLtwgDb4ZnV8AzgWlnJDQlBhudEBAhKHZIsMbDqQKObxt6eBSEoHlSQ0h6eQsjG3PQLfrpgs2Etrj6F6v3VSQdVNRGPAtf9BhmQxdFVjtqGE3LKYP0CSBKO8s+AkdN+2qCyv8bmJMXg1Cdo8hAobgkSMkbr0ssfhDNp48vrt1aTxk0DNvk6fiscQ/0fLCCFgbYiFYBGCMxIZG/SpWGZsnu0oBlATBk5dHluQD+sCPAfyBUKx3EKxejXS0cGHce94AWGWPWBnGJFzzuQT+RpcXOg4BwUf2y4rgDoIClK6HFIQ24GiJO+IQ3OMlnjaVX9YpZV32pUuCD//LG58s7l7wBvI8R+QihN5Aw48W4LvXc3PG4w7HJzwL19dAmqRoCii1/27p2srBHkgTINJPeQ/6/p81+kE7Z2rpWliSuX9l6PQze7UQLbQ7Ri0FTVMSOPzRrqfXKoG/eBbQYV684ncHUcU7mxheZcq1thvLStQQYq8FKczA%3D%3D&ctl00%24BodyABC%24strDateDeb=" . $startString . "&ctl00%24BodyABC%24strDateFin=". $endString . "&ctl00%24BodyABC%24oneSico=on&ctl00%24BodyABC%24txtOneSico=". $codeISIN ."&ctl00%24BodyABC%24dlFormat=w&ctl00%24BodyABC%24listFormat=isin&ctl00%24BodyABC%24Button1=T%E9l%E9charger",
           CURLOPT_HTTPHEADER => array(
             "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-            //"Accept-Encoding: gzip, deflate, br",
+            "Accept-Encoding: gzip, deflate, br",
             //"Cache-Control: no-cache",
             //"Content-Length: 3015",
-            //"Content-Type: application/x-www-form-urlencoded",
+            "Content-Type: application/x-www-form-urlencoded",
             //"Cookie: ASP.NET_SessionId=qdbuuvwygqwrv5uyqtcjepl2",
             //"Host: www.abcbourse.com",
             //"Postman-Token: ca4595c3-4e57-4156-b1da-1478f7ccd82d,c3a22040-0f98-4644-a0be-db39db197975",
@@ -98,7 +98,6 @@ class PriceSharesController extends Controller
         if ($err) {
           dd("cURL Error #:" . $err);
         } else {
-            dd($response);
             $lines = explode(PHP_EOL, $response);
             $array = array();
             foreach ($lines as $line) {
