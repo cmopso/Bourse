@@ -68,7 +68,7 @@ class PriceSharesController extends Controller
         $curl = curl_init();
    
         curl_setopt_array($curl, array(
-          CURLOPT_URL => "https://www.abcbourse.com/download/historiques.aspx",
+          CURLOPT_URL => "https://www.abcbourse.com/download/historiques",
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => "",
           CURLOPT_MAXREDIRS => 10,
